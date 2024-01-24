@@ -6,13 +6,13 @@ import nest_asyncio
 from telegram import Bot
 
 # Binance API credentials
-api_key = 'BVhb32XgQmX17IGs3vVH2Hw1fiH9W84pg8K5JtLuQnRKHPy7YlyPTG0qChkxTnrL'
-api_secret = 'xVM8dF8qIhTRtfaTShbHON7oJffooUbP2wp3oPqYUbFLJ1ZCHLN9dEmN9niAYzVF'
+api_key = ''
+api_secret = ''
 interval = '1d'  # 1-hour candlesticks
 
 # Telegram Bot Token and Chat ID
-telegram_token = '6811110812:AAFNJp5kcSh0KZ71Yizf8Y3rPBarz-ywopM'
-chat_id = '1385370555'
+telegram_token = ''
+chat_id = ''
 
 # Initialize Binance client
 binance = ccxt.binance({
