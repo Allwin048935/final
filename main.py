@@ -6,9 +6,9 @@ import nest_asyncio
 from telegram import Bot
 
 # Binance API credentials
-api_key = ''
-api_secret = ''
-interval = '1d'  # 1-hour candlesticks
+api_key = 'waSxjHbfTUnu9Z0swCLzUL9iBDqTtfhj1uiIByh8ROlap6G0Asyr8Fh0TzSjBeEK'
+api_secret = 'F9seOIJwGEDDkiSEYDb8H54Rr5kYmMfKpBf6b8KBUguPJSata8r1wmVQUH1aiq7V'
+interval = '4h'  # 1-hour candlesticks
 
 # Telegram Bot Token and Chat ID
 telegram_token = ''
