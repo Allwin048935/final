@@ -11,8 +11,8 @@ api_secret = 'F9seOIJwGEDDkiSEYDb8H54Rr5kYmMfKpBf6b8KBUguPJSata8r1wmVQUH1aiq7V'
 interval = '4h'  # 1-hour candlesticks
 
 # Telegram Bot Token and Chat ID
-telegram_token = ''
-chat_id = ''
+telegram_token = '6814496979:AAElB7IrLWtspYnA4NCg8dWeIPhMF5tJTYY'
+chat_id = '1385370555'
 
 # Initialize Binance client
 binance = ccxt.binance({
