@@ -32,12 +32,12 @@ def get_historical_data(symbol, interval, limit=100):
     return df
 
 # Function to check EMA cross
-def check_ema_cross(df, short_period=10, long_period=20):
+def check_ema_cross(df, short_period=2, long_period=25):
     df['ema_short'] = ema_indicator(df['close'], window=short_period)
     df['ema_long'] = ema_indicator(df['close'], window=long_period)
 
-    cross_over = df['ema_short'][-1] > df['ema_long'][-1] and df['ema_short'][-2] <= df['ema_long'][-2]
-    cross_under = df['ema_short'][-1] < df['ema_long'][-1] and df['ema_short'][-2] >= df['ema_long'][-2]
+    cross_over = df['ema_short'][-2] > df['ema_long'][-2] and df['ema_short'][-3] <= df['ema_long'][-3]
+    cross_under = df['ema_short'][-2] < df['ema_long'][-2] and df['ema_short'][-3] >= df['ema_long'][-3]
 
     return cross_over, cross_under
 
