@@ -29,7 +29,7 @@ exchange = ccxt.binance({
 last_alert_messages = {}
 
 # Function to get historical candlestick data
-def get_historical_data(symbol, interval, limit=20):
+def get_historical_data(symbol, interval, limit=50):
     ohlcv = exchange.fetch_ohlcv(symbol, interval, limit=limit)
     df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
@@ -37,12 +37,13 @@ def get_historical_data(symbol, interval, limit=20):
     return df
 
 # Function to check EMA cross
-def check_ema_cross(df, short_period=1, long_period=2):
+def check_ema_cross(df, short_period=1, long_period=2, medium_period=14):
     df['ema_short'] = ema_indicator(df['close'], window=short_period)
     df['ema_long'] = ema_indicator(df['close'], window=long_period)
+    df['ema_medium'] = ema_indicator(df['close'], window=long_period)
 
-    cross_over = df['ema_short'][-2] > df['ema_long'][-2] and df['ema_short'][-3] <= df['ema_long'][-3]
-    cross_under = df['ema_short'][-2] < df['ema_long'][-2] and df['ema_short'][-3] >= df['ema_long'][-3]
+    cross_over = df['ema_short'][-2] >= df['ema_long'][-2] and df['ema_short'][-3] <= df['ema_long'][-3] and df['ema_short'][-2] <= df['ema_medium'][-2]
+    cross_under = df['ema_short'][-2] <= df['ema_long'][-2] and df['ema_short'][-3] >= df['ema_long'][-3] and df['ema_short'][-2] >= df['ema_medium'][-2]
 
     return cross_over, cross_under
 
