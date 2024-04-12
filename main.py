@@ -58,17 +58,17 @@ async def main():
         for trading_pair in all_trading_pairs:
             symbol = trading_pair['symbol']
             # Filter only spot trading pairs with USDT as the quote currency
-            if trading_pair['type'] == 'spot' and trading_pair['quote'] == 'USDT':
+            if trading_pair['type'] == 'future' and trading_pair['quote'] == 'USDT':
                 try:
                     historical_data = get_historical_data(symbol, interval)
                     cross_over, cross_under = check_ema_cross(historical_data)
 
                     if cross_over:
-                        message = f'EMA Cross Over detected on {symbol} ({interval}).'
+                        message = f'Cross #Over #{symbol}'
                         await send_telegram_message(symbol, message)
 
                     if cross_under:
-                        message = f'EMA Cross Under detected on {symbol} ({interval}).'
+                        message = f'Cross #Under #{symbol}'
                         await send_telegram_message(symbol, message)
 
                 except Exception as e:
