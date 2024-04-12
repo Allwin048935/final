@@ -16,9 +16,13 @@ telegram_token = '6814496979:AAElB7IrLWtspYnA4NCg8dWeIPhMF5tJTYY'
 chat_id = '1385370555'
 
 # Initialize Binance client
-binance = ccxt.binance({
-    'apiKey': api_key,
-    'secret': api_secret,
+exchange = ccxt.binance({
+    'apiKey': BINANCE_API_KEY,
+    'secret': BINANCE_API_SECRET,
+    'enableRateLimit': True,
+    'options': {
+        'defaultType': 'future',  # Set the default type to futures
+    }
 })
 
 # Dictionary to store the last alert messages for each symbol
@@ -26,7 +30,7 @@ last_alert_messages = {}
 
 # Function to get historical candlestick data
 def get_historical_data(symbol, interval, limit=100):
-    ohlcv = binance.fetch_ohlcv(symbol, interval, limit=limit)
+    ohlcv = exchange.fetch_ohlcv(symbol, interval, limit=limit)
     df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
     df.set_index('timestamp', inplace=True)
