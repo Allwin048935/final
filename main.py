@@ -4,6 +4,7 @@ from ta.trend import ema_indicator
 import asyncio
 import nest_asyncio
 from telegram import Bot
+from config import symbols
 
 # Binance API credentials
 api_key = 'waSxjHbfTUnu9Z0swCLzUL9iBDqTtfhj1uiIByh8ROlap6G0Asyr8Fh0TzSjBeEK'
@@ -49,30 +50,24 @@ async def send_telegram_message(symbol, message):
         # Update the last alert message for this symbol
         last_alert_messages[symbol] = message
 
-# Main function (now defined as async)
+# Modify the main function to use symbols from the configuration file
 async def main():
-    # Get all trading pairs on Binance
-    all_trading_pairs = binance.fetch_markets()
-
     while True:
-        for trading_pair in all_trading_pairs:
-            symbol = trading_pair['symbol']
-            # Filter only spot trading pairs with USDT as the quote currency
-            if trading_pair['type'] == 'future' and trading_pair['quote'] == 'USDT':
-                try:
-                    historical_data = get_historical_data(symbol, interval)
-                    cross_over, cross_under = check_ema_cross(historical_data)
+        for symbol in symbols:
+            try:
+                historical_data = get_historical_data(symbol, interval)
+                cross_over, cross_under = check_ema_cross(historical_data)
 
-                    if cross_over:
-                        message = f'Cross #Over #{symbol}'
-                        await send_telegram_message(symbol, message)
+                if cross_over:
+                    message = f'EMA Cross Over detected on {symbol} ({interval}).'
+                    await send_telegram_message(symbol, message)
 
-                    if cross_under:
-                        message = f'Cross #Under #{symbol}'
-                        await send_telegram_message(symbol, message)
+                if cross_under:
+                    message = f'EMA Cross Under detected on {symbol} ({interval}).'
+                    await send_telegram_message(symbol, message)
 
-                except Exception as e:
-                    print(f"Error processing {symbol}: {e}")
+            except Exception as e:
+                print(f"Error processing {symbol}: {e}")
 
         # Sleep for a specified interval before checking again
         await asyncio.sleep(300)  # Adjust the sleep duration as needed
