@@ -29,7 +29,7 @@ exchange = ccxt.binance({
 last_alert_messages = {}
 
 # Function to get historical candlestick data
-def get_historical_data(symbol, interval, limit=100):
+def get_historical_data(symbol, interval, limit=20):
     ohlcv = exchange.fetch_ohlcv(symbol, interval, limit=limit)
     df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
@@ -37,7 +37,7 @@ def get_historical_data(symbol, interval, limit=100):
     return df
 
 # Function to check EMA cross
-def check_ema_cross(df, short_period=2, long_period=25):
+def check_ema_cross(df, short_period=1, long_period=2):
     df['ema_short'] = ema_indicator(df['close'], window=short_period)
     df['ema_long'] = ema_indicator(df['close'], window=long_period)
 
@@ -63,11 +63,11 @@ async def main():
                 cross_over, cross_under = check_ema_cross(historical_data)
 
                 if cross_over:
-                    message = f'EMA Cross Over detected on {symbol} ({interval}).'
+                    message = f'#Over #{symbol}'
                     await send_telegram_message(symbol, message)
 
                 if cross_under:
-                    message = f'EMA Cross Under detected on {symbol} ({interval}).'
+                    message = f'#Under #{symbol}'
                     await send_telegram_message(symbol, message)
 
             except Exception as e:
